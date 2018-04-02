@@ -1,0 +1,7 @@
+#+TITLE: GPIBTools
+
+Intended for use with the GPIB to Serial adapter based on an Arduino
+Uni by Emanuele Girlando. I found that it is necessary to increase the
+~htimeout~ variable to 5000, at least on older scopes where it takes
+longer to process the data.
+
