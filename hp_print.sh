@@ -17,9 +17,9 @@ stty -F $PORT 115200 -icrnl -imaxbel -opost \
 echo -ne "++addr $DEV\r" > $PORT
 echo -ne "++auto 0\r" > $PORT
 
-echo -ne "PRN\r" > $PORT
-echo -ne "++read eoi\r" > $PORT
+echo -ne "PA\r" > $PORT
+sleep 0.1
 echo -ne "++read eoi\r" > $PORT
 
-#echo "When the EOF marker appears, press Ctrl-C to end"
-head -n24 $PORT | sed "s/$cESC&d.//g"
+>&2 echo "When you have got what you need, press Ctrl-C to end"
+cat $PORT | sed "s/$cESC&d.//g"
