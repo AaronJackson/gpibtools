@@ -25,16 +25,22 @@ echo -ne "DAT:STOP 10000000\r" > $PORT
 # Set the depth. Two bytes per sample.
 echo -ne "DAT:WID 2\r" > $PORT
 # Set the encoding to binary data. In this case, two bytes will be
-# sent per sample, as binary data. The most significant byte will be
-# transferred first.
+# sent per sample. The most significant byte will be transferred
+# first.
 echo -ne "DAT:ENC RIB 2\r" > $PORT
+
+# We will first find the number of points the scope has saved.
+echo -ne "DAT:STOP?\r" > $PORT
+echo -ne "++read eoi\r" > $PORT
+read POINTS < $PORT
+echo "$POINTS will be transferred."
+
 # Ask the scope to send across the curve.
 echo -ne "CURV?\r" > $PORT
-# Begin data transfer.
 echo -ne "++read eoi\r" > $PORT
 
 # We are using dd to swap the byte order.
-dd conv=swab if=$PORT of=$DEST
+dd conv=swab if=/dev/ttyACM3 of=dump count=$(( $POINTS * 2 ))
 
 # Simple MATLAB Example for reading this data:
 ### fid = fopen('dump')
